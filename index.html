@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+    <meta name="viewport" content="width=device-width,  initial-scale=1">
+    <link rel="stylesheet" href="main.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <script type="text/javascript" src="main.js"></script>
+</head>
+<body>
+<br>
+<div style="text-align: center;">
+    <h1>COVID-19</h1>
+    <p>Get Corona stats according to Country</p>
+    <button  onclick="global()" id="global" class="btn btn-info" style="display:none;">Global Stats</button><br><br>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-4"></div>
+            <div class="col-lg-4">
+                <div class="form-group">
+                    <input type="text" id="country" class="form-control" onfocus="this.value=''" placeholder="Search here by country ISO....">
+                </div>
+                <button  onclick="result()" class="btn btn-info">Get Stats</button>
+            </div>
+            <div class="col-lg-4"></div>
+        </div>
+    </div>
+    <br><br>
+    <h3 class="text-center" id="area"></h3>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-4 pad">
+                <div class="confirmed-data">
+                    <p class="head"><b>Confirmed</b></p>
+                    <p id="confirmed-data"></p>
+                </div>
+            </div>
+            <div class="col-lg-4 pad">
+                <div class="recovered-data">
+                    <p class="head"><b>Recovered</b></p>
+                    <p id="recovered-data"></p>
+                </div>
+            </div>
+            <div class="col-lg-4 pad">
+                <div class="deaths-data">
+                    <p class="head"><b>Deaths</b></p>
+                    <p id="deaths-data"></p>
+                </div>
+            </div>
+        </div>
+        <br>
+        <p><b>Last Update</b></p>
+        <p id="lastUpdate"></p>
+    </div>
+</div>
+<br><br>
+</body>
+<script type="text/javascript">
+    fetch(`https://covid19.mathdro.id/api`)
+        .then(response => {
+            return response.json();
+        })
+        .then(data => {
+            document.querySelector('#area').textContent = 'Global Stats';
+            document.querySelector('#confirmed-data').textContent = data.confirmed.value;
+            document.querySelector('#recovered-data').textContent = data.recovered.value;
+            document.querySelector('#deaths-data').textContent = data.deaths.value;
+            document.querySelector('#lastUpdate').textContent = data.lastUpdate;
+        });
+    // async function getData(country) {
+    //     // body...
+    //     let response = await fetch(`https://covid19.mathdro.id/api/countries/${country}`);
+    //     let data = await response.json();
+    //     return data;
+    // }
+
+    function result()
+    {
+        const q = document.getElementById('country').value;
+        if (q === ''){
+            alert('Please enter country ISO/ country name');
+        }else{
+            fetch(`https://covid19.mathdro.id/api/countries/${q}`)
+                .then(response => {
+                    return response.json();
+                })
+                .then(data => {
+
+                    if (data.error){
+                        alert(data.error.message);
+                    }
+                    else{
+                        document.querySelector('#area').textContent = `${q} Stats`;
+                        document.querySelector('#confirmed-data').textContent = data.confirmed.value;
+                        document.querySelector('#recovered-data').textContent = data.recovered.value;
+                        document.querySelector('#deaths-data').textContent = data.deaths.value;
+                        document.querySelector('#lastUpdate').textContent =data.lastUpdate;
+                        let element = document.querySelector('#global');
+                        element.style.display = '';
+                    }
+
+                });
+        }
+        document.querySelector('#country').value = '';
+    }
+    function global()
+    {
+
+        fetch(`https://covid19.mathdro.id/api`)
+            .then(response => {
+                return response.json();
+            })
+            .then(data => {
+                document.querySelector('#area').textContent = 'Global Stats';
+                document.querySelector('#confirmed-data').textContent = data.confirmed.value;
+                document.querySelector('#recovered-data').textContent = data.recovered.value;
+                document.querySelector('#deaths-data').textContent = data.deaths.value;
+                document.querySelector('#lastUpdate').textContent = data.lastUpdate;
+                let element = document.querySelector('#global');
+                element.style.display = 'none';
+            });
+    }
+
+
+
+</script>
+</html>

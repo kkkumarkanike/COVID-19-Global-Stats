@@ -1,0 +1,29 @@
+
+.confirmed-data{
+	background-color: #ffdb99;
+	padding: 50px;
+	box-shadow: 4px 4px 8px #ffdb99;
+}
+.recovered-data{
+	background-color: #99ff99;
+	padding: 50px;
+	box-shadow: 4px 4px 8px #99ff99;
+}
+.deaths-data{
+	background-color: #ff9999;
+	padding: 50px;
+	box-shadow: 4px 4px 8px #ff9999;
+}
+#confirmed-data, #recovered-data, #deaths-data{
+	font-size: 20px;
+}
+.pad{
+	padding: 10px;
+}
+.head{
+	font-size: 20px;
+}
+#area{
+	color: #777;
+}
+
